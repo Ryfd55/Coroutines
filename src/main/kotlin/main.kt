@@ -29,12 +29,16 @@ fun main() {
                         async {
                             PostWithComments(
                                 PostWithAuthor(post, getAuthor(client, post.authorId)),
-                                getComments(client, post.id).map { comment ->
-                                    CommentWithAuthor(
-                                        comment,
-                                        getAuthor(client, comment.authorId)
-                                    )
-                                })
+                                getComments(client, post.id)
+                                    .map { comment ->
+                                        async {
+                                            CommentWithAuthor(
+                                                comment,
+                                                getAuthor(client, comment.authorId)
+                                            )
+                                        }
+                                    }.awaitAll()
+                            )
                         }
                     }.awaitAll()
                 println(posts)
