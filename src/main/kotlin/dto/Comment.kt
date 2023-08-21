@@ -7,5 +7,5 @@ data class Comment(
     val content: String,
     val published: Long,
     val likedByMe: Boolean,
-    val likes: Int = 0,
+    val likes: Int = 0
 )
